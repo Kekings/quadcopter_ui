@@ -4,7 +4,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
-from magnetometer_calibration import MagnetometerCalibration
+from .magnetometer_calibration import MagnetometerCalibration
 
 # ==========================================
 # Paths
@@ -35,11 +35,6 @@ app.mount(
     name="js"
 )
 
-app.mount(
-    "/assets",
-    StaticFiles(directory=PROJECT_DIR / "assets"),
-    name="assets"
-)
 
 app.mount(
     "/videos",
