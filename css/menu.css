@@ -1,0 +1,182 @@
+/* ==========================================
+   Side Menu
+========================================== */
+
+#side-menu{
+
+    position:fixed;
+
+    top:20px;
+    bottom:20px;
+
+    right:-340px;
+
+    width:300px;
+
+    display:flex;
+    flex-direction:column;
+
+    background:rgba(18,22,30,.82);
+
+    backdrop-filter:blur(22px);
+    -webkit-backdrop-filter:blur(22px);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    border-radius:22px 0 0 22px;
+
+    transition:right .35s ease;
+
+    z-index:1000;
+
+    overflow:hidden;
+
+}
+
+/* ==========================================
+   Open
+========================================== */
+
+#side-menu.open{
+
+    right:20px;
+
+}
+
+/* ==========================================
+   Header
+========================================== */
+
+.menu-header{
+
+    padding:32px 24px;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    font-size:22px;
+    font-weight:700;
+
+    color:white;
+
+}
+/* ==========================================
+   Menu Items
+========================================== */
+
+.menu-items{
+
+    flex:1;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:18px;
+
+    padding:24px 20px;
+
+    overflow-y:auto;
+
+    scrollbar-width:thin;
+
+}
+
+/* ==========================================
+   Buttons
+========================================== */
+
+.menu-item{
+
+    min-height:58px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 20px;
+
+    border:none;
+    border-radius:16px;
+
+    background:transparent;
+
+    color:white;
+
+    font-size:16px;
+    font-weight:500;
+
+    transition:.25s ease;
+
+    cursor:pointer;
+
+}
+
+.menu-item:hover{
+
+    background:rgba(255,255,255,.08);
+
+}
+
+.menu-item:active{
+
+    transform:scale(.97);
+
+}
+
+/* ==========================================
+   Overlay
+========================================== */
+
+#menu-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.35);
+
+    backdrop-filter:blur(4px);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:.3s ease;
+
+    z-index:999;
+
+}
+
+/* ==========================================
+   Overlay Open
+========================================== */
+
+#menu-overlay.open{
+
+    opacity:1;
+    visibility:visible;
+
+}
+
+
+
+/* ==========================================
+   Scrollbar
+========================================== */
+
+.menu-items::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.menu-items::-webkit-scrollbar-thumb{
+
+    background:rgba(255,255,255,.18);
+
+    border-radius:20px;
+
+}
+
+.menu-items::-webkit-scrollbar-track{
+
+    background:transparent;
+
+}

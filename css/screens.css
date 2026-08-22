@@ -1,0 +1,38 @@
+/* ==========================================
+   Screens
+========================================== */
+
+.screen{
+
+    position:absolute;
+
+    inset:0;
+
+    display:none;
+
+}
+
+
+.screen.active{
+
+    display:block;
+
+}
+
+
+.modal{
+
+    display:none;
+
+}
+
+
+/* ==========================================
+   Flight Screen
+========================================== */
+
+#flight-screen{
+
+    overflow:hidden;
+
+}

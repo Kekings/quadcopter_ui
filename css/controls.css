@@ -1,0 +1,93 @@
+/* ==========================================
+   D-Pad
+========================================== */
+
+#dpad{
+    width:210px;
+    height:210px;
+
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-template-rows:repeat(3,1fr);
+
+    justify-items:center;
+    align-items:center;
+
+    order:2;
+}
+
+#btn-up{
+    grid-column:2;
+    grid-row:1;
+}
+
+#btn-left{
+    grid-column:1;
+    grid-row:2;
+}
+
+#btn-right{
+    grid-column:3;
+    grid-row:2;
+}
+
+#btn-down{
+    grid-column:2;
+    grid-row:3;
+}
+
+.dpad-middle{
+    display:contents;
+}
+
+.dpad-center{
+    grid-column:2;
+    grid-row:2;
+
+    width:28px;
+    height:28px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(12px);
+}
+
+/* ==========================================
+   Direction Buttons
+========================================== */
+
+.control-button{
+    width:62px;
+    height:62px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border:none;
+    border-radius:18px;
+
+    background:var(--panel);
+    border:1px solid var(--border);
+
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
+    color:var(--text);
+
+    font-size:22px;
+    font-weight:bold;
+
+    transition:var(--transition);
+}
+
+.control-button:hover{
+    transform:translateY(-3px) scale(1.05);
+}
+
+.control-button:active{
+    transform:scale(.95);
+}

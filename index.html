@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width,
+                initial-scale=1,
+                maximum-scale=1,
+                user-scalable=no,
+                viewport-fit=cover">
+    <title>Drone Ground Control Station</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+
+<div id="app">
+
+    <!-- ================= Splash Screen ================= -->
+
+    <section id="splash-screen" class="screen">
+
+    </section>
+
+    <!-- ================= Connection Screen ================= -->
+    <section id="connection-screen" class="screen active">
+        <div id="connection-container">
+            <div class="connection-card">
+                <h1 class="connection-title">
+                    🚁 CARF Ground Control Station
+                </h1>
+                <p class="connection-subtitle">
+                    Connect to your Flight Controller and Camera
+                </p>
+                <!-- Flight Controller -->
+                <div class="connection-group">
+                    <h3>Flight Controller</h3>
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="controller-default" checked>
+                        Use Default
+                    </label>
+    
+                    <input
+                        type="text"
+                        id="controller-ip"
+                        value="192.168.137.100"
+                        placeholder="Controller IP">
+    
+                    <input
+                        type="number"
+                        id="controller-port"
+                        value="81"
+                        placeholder="Port">
+    
+                </div>
+    
+                <!-- Camera -->
+    
+                <div class="connection-group">
+                    <h3>ESP32 Camera</h3>
+                    <label class="checkbox-row">
+                        <input type="checkbox" id="camera-default" checked>
+                        Use Default
+                    </label>
+                    <input
+                        type="text"
+                        id="camera-ip"
+                        value="192.168.137.101"
+                        placeholder="Camera IP">
+    
+                    <input
+                        type="text"
+                        id="camera-stream"
+                        value="/stream"
+                        placeholder="/stream">
+    
+                </div>
+    
+                <!-- Status -->
+    
+                <div id="connection-status-text">
+                    🔴 Not Connected
+                </div>
+    
+                <!-- Buttons -->
+                <div class="connection-buttons">
+
+                    <button id="connect-button">
+                        CONNECT
+                    </button>
+
+                    <button id="scan-button">
+                        AUTO SCAN
+                    </button>
+
+                </div>
+
+                <div class="disconnect-row">
+
+                    <button id="disconnect-button">
+                        DISCONNECT
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================= Calibration Screen ================= -->
+
+<!-- ================= Calibration Screen ================= -->
+
+    <section id="calibration-screen" class="screen">
+
+        <div id="calibration-container">
+
+            <div id="calibration-card">
+
+                <!-- Header -->
+
+                <div id="calibration-header">
+
+                    <h1>
+                        ⚙ Sensor Calibration
+                    </h1>
+
+                    <p>
+                        Calibrate the flight controller sensors
+                    </p>
+
+                    <button
+                        id="calibration-back-button"
+                        class="calibration-back-button">
+
+                        ↩ BACK TO FLIGHT
+
+                    </button>
+
+                </div>
+
+
+                <!-- Sensor Status -->
+
+                <div id="calibration-sensors">
+
+                    <!-- Accelerometer -->
+
+                    <div class="calibration-sensor" id="accelerometer-sensor">
+
+                        <div class="calibration-sensor-name">
+                            <span class="sensor-indicator" id="accelerometer-indicator">
+                                ⚪
+                            </span>
+
+                            <span>
+                                Accelerometer
+                            </span>
+                        </div>
+
+                        <span
+                            id="accelerometer-status"
+                            class="calibration-status">
+                            Ready
+                        </span>
+
+                    </div>
+
+
+                    <!-- Gyroscope -->
+
+                    <div class="calibration-sensor" id="gyroscope-sensor">
+
+                        <div class="calibration-sensor-name">
+
+                            <span class="sensor-indicator" id="gyroscope-indicator">
+                                ⚪
+                            </span>
+
+                            <span>
+                                Gyroscope
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="gyroscope-status"
+                            class="calibration-status">
+                            Ready
+                        </span>
+
+                    </div>
+
+
+                    <!-- Magnetometer -->
+
+                    <div class="calibration-sensor" id="magnetometer-sensor">
+
+                        <div class="calibration-sensor-name">
+
+                            <span class="sensor-indicator" id="magnetometer-indicator">
+                                ⚪
+                            </span>
+
+                            <span>
+                                Magnetometer
+                            </span>
+
+                        </div>
+
+                        <span
+                            id="magnetometer-status"
+                            class="calibration-status">
+                            Ready
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ================= Calibration Results ================= -->
+
+                <div id="calibration-results">
+
+                    <!-- Gyroscope Result -->
+
+                    <div class="calibration-result-card" id="gyro-result-card">
+
+                        <h3>🔄 Gyroscope Calibration</h3>
+
+                        <div class="calibration-values">
+
+                            <div>
+                                <span>X</span>
+                                <strong id="gyro-x">--</strong>
+                            </div>
+
+                            <div>
+                                <span>Y</span>
+                                <strong id="gyro-y">--</strong>
+                            </div>
+
+                            <div>
+                                <span>Z</span>
+                                <strong id="gyro-z">--</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Accelerometer Result -->
+
+                    <div class="calibration-result-card" id="accel-result-card">
+
+                        <h3>📐 Accelerometer Calibration</h3>
+
+                        <div class="calibration-values">
+
+                            <div>
+                                <span>X</span>
+                                <strong id="accel-x">--</strong>
+                            </div>
+
+                            <div>
+                                <span>Y</span>
+                                <strong id="accel-y">--</strong>
+                            </div>
+
+                            <div>
+                                <span>Z</span>
+                                <strong id="accel-z">--</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Magnetometer Result -->
+
+                    <div class="calibration-result-card" id="mag-result-card">
+
+                        <h3>🧭 Magnetometer Calibration</h3>
+
+
+                        <!-- Hard Iron -->
+
+                        <div class="matrix-section">
+
+                            <h4>Hard Iron Offset</h4>
+
+                            <div class="vector-values">
+
+                                <span id="hardiron-x">--</span>
+                                <span id="hardiron-y">--</span>
+                                <span id="hardiron-z">--</span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Soft Iron -->
+
+                        <div class="matrix-section">
+
+                            <h4>Soft Iron Correction Matrix</h4>
+
+                            <div class="matrix">
+
+                                <span id="softiron-00">--</span>
+                                <span id="softiron-01">--</span>
+                                <span id="softiron-02">--</span>
+
+                                <span id="softiron-10">--</span>
+                                <span id="softiron-11">--</span>
+                                <span id="softiron-12">--</span>
+
+                                <span id="softiron-20">--</span>
+                                <span id="softiron-21">--</span>
+                                <span id="softiron-22">--</span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Calibration Instructions -->
+
+                <div id="calibration-instructions">
+
+                    <h3>
+                        Instructions
+                    </h3>
+
+                    <p id="calibration-instruction-text">
+                        Place the drone on a flat,
+                        stationary surface before starting.
+                    </p>
+
+                </div>
+
+
+                <!-- Progress -->
+
+                <div id="calibration-progress-container">
+
+                    <div id="calibration-progress-bar">
+
+                        <div id="calibration-progress-fill"></div>
+
+                    </div>
+
+                    <div id="calibration-progress-text">
+                        0%
+                    </div>
+
+                </div>
+
+
+                <!-- Status -->
+
+                <div id="calibration-status">
+
+                    ⚪ Ready to calibrate
+
+                </div>
+
+                <!-- ================= Magnetometer 3D Plot ================= -->
+
+                <div id="magnetometer-3d-container">
+
+                    <div id="magnetometer-3d-header">
+                        <h3>🧭 Magnetometer Calibration</h3>
+
+                        <p>
+                            Raw and corrected magnetic field measurements
+                        </p>
+                    </div>
+
+                    <div id="magnetometer-3d-plot"></div>
+
+                </div>
+
+                <!-- Main Buttons -->
+
+                <div id="calibration-buttons">
+
+                    <button
+                        id="start-calibration-button"
+                        class="calibration-primary-button">
+
+                        START CALIBRATION
+
+                    </button>
+
+
+                    <button
+                        id="apply-calibration-button"
+                        class="calibration-success-button"
+                        disabled>
+
+                        APPLY
+
+                    </button>
+
+
+                    <button
+                        id="cancel-calibration-button"
+                        class="calibration-danger-button">
+
+                        CANCEL
+
+                    </button>
+
+                </div>
+
+
+                <!-- Calibration Again -->
+
+                <div id="calibration-again-container">
+
+                    <button
+                        id="calibrate-again-button"
+                        class="calibration-secondary-button">
+
+                        🔄 CALIBRATE AGAIN
+
+                    </button>
+
+                </div>
+
+
+                <!-- Saved State -->
+
+                <div id="calibration-saved-status">
+
+                    💾 No calibration saved
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ================= Flight Screen ================= -->
+
+    <section id="flight-screen" class="screen">
+        <!-- ================= Video Background ================= -->
+        <div id="video-container">
+
+            <!-- ESP32-CAM Stream -->
+            <img
+                id="camera-stream"
+                src=""
+                alt="Drone Camera"
+                style="display:none;">
+
+            <!-- Placeholder Video -->
+            <video
+                id="placeholder-video"
+                autoplay
+                muted
+                loop
+                playsinline
+                style="display:none;">
+            </video>
+
+            <!-- Placeholder when camera is OFF -->
+            <div id="camera-placeholder">
+                Camera Offline
+            </div>
+
+        </div>
+        <!-- ================= UI Overlay ================= -->
+        <div id="ui-overlay">
+            <!-- ================= Top Status ================= -->
+            <header id="top-bar">
+                <div class="status-group">
+                    <div class="status-pill" id="connection-status">
+                        🟢 Connected
+                    </div>
+                    <div class="status-pill" id="battery-status">
+                        🔋 100%
+                    </div>
+                    <div class="status-pill" id="wifi-status">
+                        📶 Excellent
+                    </div>
+                    <div class="status-pill" id="flight-mode">
+                        🧭 Manual
+                    </div>
+                    <div class="status-pill" id="camera-status">
+                        📷 Live
+                    </div>
+                </div>
+                <button id="menu-button">
+                    ☰
+                </button>
+            </header>
+            <!-- ================= Telemetry ================= -->
+            <div id="telemetry">
+                <div class="telemetry-item">
+                    X : <span id="telemetry-x">0</span>
+                </div>
+                <div class="telemetry-item">
+                    Y : <span id="telemetry-y">0</span>
+                </div>
+            </div> 
+            <!-- ================= Crosshair ================= -->
+            <div id="crosshair">
+                +
+            </div>
+            <!-- ================= Left Panel ================= -->
+            <div id="left-panel">
+                <div id="left-joystick" class="joystick">
+                    <div class="joystick-ring">
+                        <div class="joystick-base">
+                            <div class="joystick-guide"></div>
+                            <div class="stick">
+                                <div class="stick-top"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ================= Right Panel ================= -->
+            <div id="right-panel">
+                <!-- Direction Pad -->
+                <div id="dpad">
+                    <button class="control-button" id="btn-up">
+                        ▲
+                    </button>
+                    <div class="dpad-middle">
+                        <button class="control-button" id="btn-left">
+                            ◀
+                        </button>
+                        <div class="dpad-center"></div>
+                        <button class="control-button" id="btn-right">
+                            ▶
+                        </button>
+                    </div>
+                    <button class="control-button" id="btn-down">
+                        ▼
+                    </button>
+                </div>
+                <!-- Action Buttons -->
+                <div id="action-buttons">
+                    <button class="action-button" id="btn-land">
+                        LAND
+                    </button>
+                    <button class="danger-button" id="btn-stop">
+                        STOP
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>  
+    <!-- ================= GPS Screen ================= -->
+    <section id="gps-screen" class="screen">
+
+        <div id="gps-header">
+            <span>📍 GPS MAP</span>
+
+            <button id="close-map">
+                ✕
+            </button>
+        </div>
+
+        <div id="map"></div>
+
+        <div id="gps-resize-handle"></div>
+    </section>
+
+
+
+    <!-- ================= PID Tuning Screen ================= -->
+
+    <section id="pid-screen" class="screen">
+
+        <div id="pid-container">
+
+            <div id="pid-card">
+
+                <div id="pid-header">
+                    <h1>🎛 PID Tuning</h1>
+                    <p>Developer flight-control tuning</p>
+
+                    <button id="pid-back-button">
+                        ↩ BACK TO FLIGHT
+                    </button>
+                </div>
+
+                <!-- Arm / Lock Status -->
+
+                <div id="pid-lock-status">
+                    🔒 PID tuning locked
+                </div>
+
+                <!-- Roll -->
+
+                <div class="pid-axis-card">
+
+                    <h3>↔ Roll</h3>
+
+                    <div class="pid-loop">
+                        <h4>Outer Loop</h4>
+
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="roll-outer-p" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="roll-outer-i" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="roll-outer-d" type="number" step="0.001">
+                        </div>
+                    </div>
+
+                    <div class="pid-loop">
+                        <h4>Inner Loop</h4>
+
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="roll-inner-p" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="roll-inner-i" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="roll-inner-d" type="number" step="0.001">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Pitch -->
+
+                <div class="pid-axis-card">
+
+                    <h3>↕ Pitch</h3>
+
+                    <div class="pid-loop">
+                        <h4>Outer Loop</h4>
+
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="pitch-outer-p" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="pitch-outer-i" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="pitch-outer-d" type="number" step="0.001">
+                        </div>
+                    </div>
+
+                    <div class="pid-loop">
+                        <h4>Inner Loop</h4>
+
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="pitch-inner-p" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="pitch-inner-i" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="pitch-inner-d" type="number" step="0.001">
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Yaw -->
+
+                <div class="pid-axis-card">
+
+                    <h3>⟳ Yaw</h3>
+
+                    <div class="pid-loop">
+                        <h4>Outer Loop</h4>
+
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="yaw-outer-p" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="yaw-outer-i" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="yaw-outer-d" type="number" step="0.001">
+                        </div>
+                    </div>
+
+                    <div class="pid-loop">
+                        <h4>Inner Loop</h4>
+
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="yaw-inner-p" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="yaw-inner-i" type="number" step="0.001">
+                        </div>
+
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="yaw-inner-d" type="number" step="0.001">
+                        </div>
+                    </div>
+
+                </div>
+
+                <div id="pid-actions">
+
+                    <button id="pid-apply-button">
+                        APPLY PID GAINS
+                    </button>
+
+                    <button id="pid-reset-button">
+                        RESET
+                    </button>
+
+                </div>
+
+                <div id="pid-status">
+                    🟡 Waiting for tuning command
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= Settings ================= -->
+    <section id="settings-modal" class="modal">
+
+    </section>
+
+ <!-- ================= System Information ================= -->
+<section id="system-info-modal" class="modal">
+
+</section>
+
+<!-- ================= Menu Overlay ================= -->
+
+<div id="menu-overlay"></div>
+
+<!-- ================= Side Menu ================= -->
+
+<aside id="side-menu">
+
+    <div class="menu-header">
+        🚁 Drone Ground Control
+    </div>
+
+    <div class="menu-items">
+
+        <button class="menu-item" id="menu-fullscreen">
+            🖥 Fullscreen
+        </button>
+
+        <button class="menu-item" id="menu-connection">
+            📡 Connection
+        </button>
+
+        <button class="menu-item" id="menu-gps">
+            📍 GPS Map
+        </button>
+
+        <button class="menu-item" id="menu-calibration">
+            ⚙ Calibration
+        </button>
+
+        <button class="menu-item" id="menu-pid">
+            🎛 PID Tuning
+        </button>
+
+        <button class="menu-item" id="menu-camera">
+            📷 Camera
+        </button>
+
+        <button class="menu-item" id="menu-flight-mode">
+            🧭 Flight Mode
+        </button>
+
+        <button class="menu-item" id="menu-telemetry">
+            📊 Telemetry
+        </button>
+
+        <button class="menu-item" id="menu-settings">
+            ⚙ Settings
+        </button>
+
+        <button class="menu-item" id="menu-system">
+            ℹ System Information
+        </button>
+
+    </div>
+
+</aside>
+
+</div>
+
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwis3ekWufEPRyL-WE1lMjTHQmKQ8TdZo"></script>
+
+<script type="module" src="js/app.js"></script>
+
+</body>
+</html>

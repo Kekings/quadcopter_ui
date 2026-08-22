@@ -1,0 +1,113 @@
+/* ==========================================
+   Top Bar
+========================================== */
+
+#top-bar{
+    position:absolute;
+    top:20px;
+    left:20px;
+    right:20px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    z-index:100;
+}
+
+/* ==========================================
+   Status Group
+========================================== */
+
+.status-group{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    flex-wrap:wrap;
+}
+
+/* ==========================================
+   Status Pills
+========================================== */
+
+.status-pill{
+    min-width:120px;
+    height:42px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:0 18px;
+
+    background:rgba(18,22,30,.45);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:999px;
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+    color:var(--text);
+
+    font-size:14px;
+    font-weight:600;
+
+    white-space:nowrap;
+
+    transition:var(--transition);
+
+    pointer-events:auto;
+}
+
+.status-pill:hover{
+    transform:translateY(-2px);
+
+    background:rgba(35,40,55,.55);
+
+    border-color:rgba(255,255,255,.15);
+
+    box-shadow:0 0 16px rgba(255,255,255,.08);
+}
+
+/* ==========================================
+   Menu Button
+========================================== */
+
+#menu-button{
+    width:48px;
+    height:48px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:rgba(18,22,30,.45);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+
+    color:var(--text);
+
+    font-size:22px;
+
+    transition:var(--transition);
+
+    pointer-events:auto;
+}
+
+#menu-button:hover{
+    transform:translateY(-2px) scale(1.06);
+
+    background:rgba(35,40,55,.55);
+
+    border-color:rgba(255,255,255,.15);
+
+    box-shadow:0 0 16px rgba(255,255,255,.08);
+}
+
+#menu-button:active{
+    transform:scale(.95);
+}

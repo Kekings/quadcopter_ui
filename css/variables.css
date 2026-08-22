@@ -1,0 +1,19 @@
+/* ==========================================
+   CSS Variables
+========================================== */
+
+:root{
+    --background:#0f1117;
+    --panel:rgba(18,22,30,.45);
+    --border:rgba(255,255,255,.08);
+
+    --primary:#00b7ff;
+    --success:#00d26a;
+    --warning:#ffb300;
+    --danger:#ff3b30;
+
+    --text:#ffffff;
+
+    --radius:18px;
+    --transition:.25s ease;
+}

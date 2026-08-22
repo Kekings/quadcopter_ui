@@ -1,0 +1,170 @@
+/* ==========================================
+   Mobile Devices
+========================================== */
+
+@media screen and (max-width:1024px){
+
+    html,
+    body{
+
+        width:100%;
+        height:100dvh;
+
+        overflow:hidden;
+
+        touch-action:manipulation;
+
+    }
+
+    #app{
+
+        width:100%;
+        height:100dvh;
+
+    }
+
+    #flight-screen{
+
+        width:100%;
+        height:100dvh;
+
+    }
+
+    #video-container{
+
+        width:100%;
+        height:100%;
+
+    }
+
+}
+
+/* ==========================================
+   Landscape
+========================================== */
+
+@media screen and (max-width:1024px) and (orientation:landscape){
+
+    #top-bar{
+
+        top:10px;
+        left:10px;
+        right:10px;
+
+    }
+
+    .status-pill{
+
+        min-width:90px;
+
+        height:36px;
+
+        font-size:12px;
+
+        padding:0 12px;
+
+    }
+
+    #menu-button{
+
+        width:46px;
+        height:46px;
+
+        font-size:20px;
+
+    }
+
+    #left-panel{
+
+        left:12px;
+        bottom:12px;
+
+    }
+
+    #right-panel{
+
+        right:12px;
+        bottom:12px;
+
+    }
+
+    .joystick{
+
+        width:170px;
+        height:170px;
+
+    }
+
+    .joystick-ring{
+
+        width:170px;
+        height:170px;
+
+    }
+
+    .joystick-base{
+
+        width:135px;
+        height:135px;
+
+    }
+
+    .joystick-guide{
+
+        width:105px;
+        height:105px;
+
+    }
+
+    #dpad{
+
+        width:180px;
+        height:180px;
+
+    }
+
+}
+
+/* ==========================================
+   Portrait Mode
+========================================== */
+
+@media screen and (max-width:1024px) and (orientation:portrait){
+
+    #flight-screen{
+
+        display:none;
+
+    }
+
+    body::before{
+
+        content:"🔄 Rotate your device\A\AThis Ground Control Station is designed for Landscape Mode.";
+
+        white-space:pre-wrap;
+
+        position:fixed;
+
+        inset:0;
+
+        display:flex;
+
+        justify-content:center;
+        align-items:center;
+
+        text-align:center;
+
+        padding:40px;
+
+        font-size:24px;
+        font-weight:600;
+
+        color:white;
+
+        background:#0f1117;
+
+        z-index:99999;
+
+    }
+
+}

@@ -1,0 +1,66 @@
+/* ==========================================
+   Video Container
+========================================== */
+
+#video-container{
+    position:absolute;
+    inset:0;
+    overflow:hidden;
+    background:#111;
+}
+
+/* ==========================================
+   ESP32-CAM Stream
+========================================== */
+
+#camera-stream{
+
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:none;
+
+}
+
+/* ==========================================
+   Placeholder Video
+========================================== */
+
+#placeholder-video{
+
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    display:none;
+
+}
+
+/* ==========================================
+   Camera Placeholder
+========================================== */
+
+#camera-placeholder{
+
+    position:absolute;
+    inset:0;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:28px;
+    letter-spacing:2px;
+
+    color:#999;
+
+}

@@ -1,0 +1,57 @@
+/* ==========================================
+   Action Buttons
+========================================== */
+
+#action-buttons{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+
+    order:1;
+}
+
+.action-button,
+.danger-button{
+    width:65px;
+    height:65px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    border-radius:18px;
+
+    background:var(--panel);
+    border:1px solid var(--border);
+
+    backdrop-filter:blur(12px);
+    -webkit-backdrop-filter:blur(12px);
+
+    color:var(--text);
+
+    font-size:12px;
+    font-weight:700;
+    letter-spacing:.5px;
+
+    transition:var(--transition);
+}
+
+.action-button{
+    background:rgba(255,179,0,.18);
+    border-color:rgba(255,179,0,.45);
+}
+
+.danger-button{
+    background:rgba(255,59,48,.18);
+    border-color:rgba(255,59,48,.45);
+}
+
+.action-button:hover,
+.danger-button:hover{
+    transform:translateY(-3px) scale(1.05);
+}
+
+.action-button:active,
+.danger-button:active{
+    transform:scale(.95);
+}

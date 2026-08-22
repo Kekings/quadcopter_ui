@@ -1,0 +1,271 @@
+/* ==========================================
+   Calibration Screen
+========================================== */
+
+#calibration-screen.active {
+    display: block;
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 30px 20px;
+    background: #101418;
+}
+
+/* ==========================================
+   Container
+========================================== */
+
+#calibration-container {
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto;
+    padding-bottom: 40px;
+}
+
+/* ==========================================
+   Card
+========================================== */
+
+#calibration-card {
+    padding: 30px;
+    background: rgba(20,25,30,.96);
+    border-radius: 20px;
+    box-shadow: 0 20px 50px rgba(0,0,0,.45);
+}
+
+/* ==========================================
+   Header
+========================================== */
+
+#calibration-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+#calibration-header h1 {
+    margin: 0 0 8px;
+}
+
+#calibration-header p {
+    margin: 0;
+    opacity: .7;
+}
+
+/* ==========================================
+   Sensor List
+========================================== */
+
+#calibration-sensors {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+
+.calibration-sensor {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background: rgba(255,255,255,.05);
+    border-radius: 10px;
+}
+
+/* ==========================================
+   Instructions
+========================================== */
+
+#calibration-instructions {
+    padding: 15px;
+    margin-bottom: 20px;
+    background: rgba(255,255,255,.04);
+    border-radius: 10px;
+}
+
+#calibration-instructions h3 {
+    margin-top: 0;
+}
+
+/* ==========================================
+   Progress
+========================================== */
+
+#calibration-progress-container {
+    margin-bottom: 20px;
+}
+
+#calibration-progress-bar {
+    width: 100%;
+    height: 12px;
+    overflow: hidden;
+    background: #252b30;
+    border-radius: 20px;
+}
+
+#calibration-progress-fill {
+    width: 0%;
+    height: 100%;
+    transition: width .3s ease;
+}
+
+#calibration-progress-text {
+    margin-top: 8px;
+    text-align: center;
+}
+
+/* ==========================================
+   Status
+========================================== */
+
+#calibration-status {
+    text-align: center;
+    padding: 12px;
+    margin-bottom: 20px;
+}
+
+/* ==========================================
+   Magnetometer 3D Plot
+========================================== */
+
+#magnetometer-3d-container {
+    width: 100%;
+    margin: 20px 0;
+    padding: 15px;
+    box-sizing: border-box;
+    background: rgba(255,255,255,.04);
+    border-radius: 14px;
+}
+
+#magnetometer-3d-header {
+    margin-bottom: 10px;
+}
+
+#magnetometer-3d-header h3 {
+    margin: 0 0 5px;
+}
+
+#magnetometer-3d-header p {
+    margin: 0;
+    opacity: .7;
+    font-size: .9rem;
+}
+
+#magnetometer-3d-plot {
+    width: 100%;
+    height: 500px;
+    min-height: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+/* ==========================================
+   Buttons
+========================================== */
+
+#calibration-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#calibration-buttons button,
+#calibrate-again-button,
+.calibration-back-button {
+    padding: 12px 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform .15s ease, opacity .15s ease;
+}
+
+#calibration-buttons button:hover,
+#calibrate-again-button:hover,
+.calibration-back-button:hover {
+    transform: translateY(-1px);
+}
+
+#calibration-buttons button:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ==========================================
+   Calibrate Again
+========================================== */
+
+#calibration-again-container {
+    margin-top: 12px;
+    text-align: center;
+}
+
+/* ==========================================
+   Saved Status
+========================================== */
+
+#calibration-saved-status {
+    margin-top: 20px;
+    text-align: center;
+    opacity: .7;
+}
+
+/* ==========================================
+   Button Styles
+========================================== */
+
+.calibration-primary-button {
+    background: #2563eb;
+    color: white;
+}
+
+.calibration-success-button {
+    background: #16a34a;
+    color: white;
+}
+
+.calibration-danger-button {
+    background: #dc2626;
+    color: white;
+}
+
+.calibration-secondary-button {
+    background: #6b7280;
+    color: white;
+}
+
+.calibration-back-button {
+    margin-top: 15px;
+    background: #374151;
+    color: white;
+}
+
+/* ==========================================
+   Mobile
+========================================== */
+
+@media (max-width: 600px) {
+    #calibration-screen.active {
+        padding: 15px 10px;
+    }
+
+    #calibration-card {
+        padding: 20px 15px;
+        border-radius: 15px;
+    }
+
+    #calibration-container {
+        max-width: 100%;
+    }
+
+    #magnetometer-3d-container {
+        padding: 10px;
+    }
+
+    #magnetometer-3d-plot {
+        height: 400px;
+        min-height: 350px;
+    }
+}
