@@ -179,6 +179,16 @@ window.addEventListener("ack", (event)=>{
 
     const {command, success} = event.detail;
 
+    if(command === "emergency_stop"){
+
+        if(success){
+            setArmedVisual(false);
+            awaitingCommand = null;
+        }
+
+        return;
+    }
+
     if(command !== "arm" && command !== "disarm")
         return;
 
@@ -192,7 +202,7 @@ window.addEventListener("ack", (event)=>{
         return;
     }
 
-    setArmedVisual(command === "arm");
+    setArmedVisual(command === "arm" ? true : false);
     awaitingCommand = null;
 
 });
