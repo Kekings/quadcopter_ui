@@ -86,7 +86,13 @@ function connectFastAPI() {
         return;
     }
 
-    fastApiSocket = new WebSocket("ws://localhost:8000/ws/calibration");
+
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const host = window.location.host;
+
+    fastApiSocket = new WebSocket(
+        `${protocol}//${host}/ws/calibration`
+    );
 
     fastApiSocket.onopen = () => {
         console.log("FastAPI calibration connected");
