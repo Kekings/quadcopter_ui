@@ -81,3 +81,25 @@ export function sendEmergencyStop(){
     });
 
 }
+
+/* ==========================================
+   Arm / Disarm
+========================================== */
+
+export function sendArm(){
+
+    send({
+        type: "flight",
+        action: "arm"
+    });
+
+}
+
+export function sendDisarm(){
+
+    send({
+        type: "flight",
+        action: "disarm"
+    });
+
+}

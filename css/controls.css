@@ -91,3 +91,77 @@
 .control-button:active{
     transform:scale(.95);
 }
+
+
+.dpad-center {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    user-select: none;
+    touch-action: none;
+    background: #222;
+}
+
+/* Disarmed: heartbeat pulse red glow */
+.dpad-center.disarmed {
+    animation: heartbeat-glow 1.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat-glow {
+    0%, 100% {
+        box-shadow: 0 0 8px 2px rgba(255, 0, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 18px 6px rgba(255, 0, 0, 0.8);
+    }
+}
+
+/* Armed: steady yellow-green glow */
+.dpad-center.armed {
+    box-shadow: 0 0 14px 5px rgba(180, 220, 40, 0.85);
+    background: #2a2a10;
+}
+
+/* Fill ring while holding, using conic-gradient wipe */
+.dpad-center.holding::before {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: conic-gradient(
+        #00e5ff var(--hold-progress, 0%),
+        transparent 0%
+    );
+    animation: hold-fill var(--hold-duration, 1000ms) linear forwards;
+    z-index: -1;
+}
+
+@keyframes hold-fill {
+    from {
+        --hold-progress: 0%;
+    }
+    to {
+        --hold-progress: 100%;
+    }
+}
+
+.dpad-center.pending {
+    animation: pending-pulse 0.6s ease-in-out infinite;
+}
+
+@keyframes pending-pulse {
+    0%, 100% {
+        box-shadow: 0 0 10px 3px rgba(0, 200, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 20px 6px rgba(0, 200, 255, 0.9);
+    }
+}
