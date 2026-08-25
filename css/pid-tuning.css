@@ -1,335 +1,100 @@
-/* ==========================================
-   PID Tuning Screen
-========================================== */
-
-#pid-screen{
-    position:absolute;
-    inset:0;
-    overflow-y:auto;
-    overflow-x:hidden;
-    -webkit-overflow-scrolling:touch;
+#pid-container {
+    height: 100%;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 12px;
+    box-sizing: border-box;
 }
 
-/* ==========================================
-   PID Container
-========================================== */
-
-#pid-container{
-    width:100%;
-    min-height:100%;
-    display:flex;
-    justify-content:center;
-    padding:30px 20px 50px;
-    box-sizing:border-box;
+#pid-card {
+    max-width: 420px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* ==========================================
-   PID Main Card
-========================================== */
-
-#pid-card{
-    width:100%;
-    max-width:900px;
-    padding:30px;
-    box-sizing:border-box;
-    background:rgba(18,22,30,.88);
-    backdrop-filter:blur(22px);
-    -webkit-backdrop-filter:blur(22px);
-    border:1px solid rgba(255,255,255,.08);
-    border-radius:24px;
-    box-shadow:0 20px 60px rgba(0,0,0,.35);
-    color:white;
+#pid-header h1 {
+    font-size: 1.2rem;
+    margin: 0 0 4px 0;
 }
 
-/* ==========================================
-   Header
-========================================== */
-
-#pid-header{
-    position:relative;
-    padding-bottom:24px;
-    margin-bottom:24px;
-    border-bottom:1px solid rgba(255,255,255,.08);
+#pid-header p {
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin: 0 0 8px 0;
 }
 
-#pid-header h1{
-    margin:0;
-    font-size:28px;
-    font-weight:700;
+.pid-axis-card {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 10px 12px;
 }
 
-#pid-header p{
-    margin:8px 0 0;
-    color:rgba(255,255,255,.55);
-    font-size:14px;
+.pid-axis-card h3 {
+    font-size: 0.95rem;
+    margin: 0 0 8px 0;
 }
 
-/* ==========================================
-   Back Button
-========================================== */
-
-#pid-back-button{
-    margin-top:20px;
-    padding:11px 18px;
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:12px;
-    background:rgba(255,255,255,.06);
-    color:white;
-    cursor:pointer;
-    font-size:14px;
-    transition:.2s ease;
+.pid-gain-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
 }
 
-#pid-back-button:hover{
-    background:rgba(255,255,255,.12);
+.pid-gain-row label {
+    font-size: 0.8rem;
+    width: 20px;
+    opacity: 0.8;
 }
 
-#pid-back-button:active{
-    transform:scale(.97);
+.pid-gain-row input {
+    width: 90px;
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(0,0,0,0.3);
+    color: white;
+    text-align: right;
 }
 
-/* ==========================================
-   Lock Status
-========================================== */
-
-#pid-lock-status{
-    padding:14px 16px;
-    margin-bottom:24px;
-    border-radius:14px;
-    background:rgba(255,255,255,.05);
-    border:1px solid rgba(255,255,255,.07);
-    color:rgba(255,255,255,.75);
-    font-size:14px;
+#pid-actions {
+    display: flex;
+    gap: 8px;
 }
 
-/* ==========================================
-   Axis Cards
-========================================== */
-
-.pid-axis-card{
-    padding:22px;
-    margin-bottom:20px;
-    border-radius:18px;
-    background:rgba(255,255,255,.035);
-    border:1px solid rgba(255,255,255,.07);
+#pid-actions button {
+    flex: 1;
+    padding: 8px 10px;
+    font-size: 0.8rem;
+    border-radius: 8px;
+    border: none;
 }
 
-.pid-axis-card > h3{
-    margin:0 0 18px;
-    font-size:19px;
-    font-weight:650;
+#pid-apply-button {
+    background: #4caf50;
+    color: white;
 }
 
-/* ==========================================
-   PID Loops
-========================================== */
-
-.pid-loop{
-    padding:18px;
-    margin-top:14px;
-    border-radius:15px;
-    background:rgba(0,0,0,.16);
-    border:1px solid rgba(255,255,255,.06);
+#pid-reset-button {
+    background: #444;
+    color: white;
 }
 
-.pid-loop h4{
-    margin:0 0 14px;
-    font-size:14px;
-    font-weight:600;
-    color:rgba(255,255,255,.65);
-    text-transform:uppercase;
-    letter-spacing:.08em;
+#pid-status {
+    font-size: 0.8rem;
+    text-align: center;
+    opacity: 0.8;
 }
 
-/* ==========================================
-   Gain Row
-========================================== */
-
-.pid-gain-row{
-    display:grid;
-    grid-template-columns:35px 1fr;
-    align-items:center;
-    gap:12px;
-    margin-top:10px;
-}
-
-.pid-gain-row label{
-    font-size:14px;
-    font-weight:700;
-    color:rgba(255,255,255,.65);
-}
-
-/* ==========================================
-   PID Inputs
-========================================== */
-
-.pid-gain-row input{
-    width:100%;
-    min-height:42px;
-    box-sizing:border-box;
-    padding:0 12px;
-    border:1px solid rgba(255,255,255,.10);
-    border-radius:10px;
-    background:rgba(255,255,255,.055);
-    color:white;
-    outline:none;
-    font-size:15px;
-    transition:.2s ease;
-}
-
-.pid-gain-row input:focus{
-    border-color:rgba(255,255,255,.28);
-    background:rgba(255,255,255,.08);
-}
-
-/* Remove number input arrows */
-
-.pid-gain-row input::-webkit-inner-spin-button,
-.pid-gain-row input::-webkit-outer-spin-button{
-    -webkit-appearance:none;
-    margin:0;
-}
-
-.pid-gain-row input[type="number"]{
-    appearance:textfield;
-    -moz-appearance:textfield;
-}
-
-/* ==========================================
-   PID Actions
-========================================== */
-
-#pid-actions{
-    display:flex;
-    gap:14px;
-    margin-top:26px;
-}
-
-#pid-actions button{
-    flex:1;
-    min-height:48px;
-    padding:0 18px;
-    border:none;
-    border-radius:13px;
-    font-size:14px;
-    font-weight:700;
-    cursor:pointer;
-    color:white;
-    transition:.2s ease;
-}
-
-#pid-apply-button{
-    background:rgba(70,180,120,.85);
-}
-
-#pid-reset-button{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.10) !important;
-}
-
-#pid-actions button:hover{
-    filter:brightness(1.12);
-}
-
-#pid-actions button:active{
-    transform:scale(.97);
-}
-
-#pid-actions button:disabled{
-    opacity:.35;
-    cursor:not-allowed;
-    filter:none;
-    transform:none;
-}
-
-/* ==========================================
-   PID Status
-========================================== */
-
-#pid-status{
-    margin-top:20px;
-    padding:14px 16px;
-    border-radius:13px;
-    background:rgba(255,255,255,.04);
-    border:1px solid rgba(255,255,255,.06);
-    color:rgba(255,255,255,.65);
-    font-size:14px;
-    text-align:center;
-}
-
-/* ==========================================
-   Status States
-========================================== */
-
-#pid-status[data-status="success"]{
-    color:#8ff0b5;
-}
-
-#pid-status[data-status="error"]{
-    color:#ff8d8d;
-}
-
-#pid-status[data-status="loading"]{
-    color:#ffd477;
-}
-
-#pid-status[data-status="modified"]{
-    color:#8dc8ff;
-}
-
-/* ==========================================
-   Mobile
-========================================== */
-
-@media (max-width:700px){
-    #pid-container{
-        padding:15px 10px 35px;
-    }
-
-    #pid-card{
-        padding:20px 15px;
-        border-radius:19px;
-    }
-
-    #pid-header h1{
-        font-size:23px;
-    }
-
-    .pid-axis-card{
-        padding:16px;
-    }
-
-    .pid-loop{
-        padding:15px;
-    }
-
-    #pid-actions{
-        flex-direction:column;
-    }
-}
-
-/* ==========================================
-   Small Phones
-========================================== */
-
-@media (max-width:420px){
-    #pid-container{
-        padding:10px 6px 30px;
-    }
-
-    #pid-card{
-        padding:16px 11px;
-    }
-
-    .pid-axis-card{
-        padding:13px;
-    }
-
-    .pid-loop{
-        padding:13px;
-    }
-
-    #pid-header h1{
-        font-size:21px;
-    }
+#pid-disarm-button {
+    background: #c0392b;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    margin-top: 6px;
 }
