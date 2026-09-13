@@ -1,100 +1,118 @@
-#pid-container {
-    height: 100%;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 12px;
-    box-sizing: border-box;
+#pid-container{
+    height:100%;
+    overflow-y:auto;
+    -webkit-overflow-scrolling:touch;
+    padding:12px;
+    box-sizing:border-box;
 }
 
-#pid-card {
-    max-width: 420px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+#pid-card{
+    max-width:520px;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
 }
 
-#pid-header h1 {
-    font-size: 1.2rem;
-    margin: 0 0 4px 0;
+#pid-header h1{
+    font-size:1.2rem;
+    margin:0 0 4px 0;
 }
 
-#pid-header p {
-    font-size: 0.8rem;
-    opacity: 0.7;
-    margin: 0 0 8px 0;
+#pid-header p{
+    font-size:0.8rem;
+    opacity:0.7;
+    margin:0 0 8px 0;
 }
 
-.pid-axis-card {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 10px;
-    padding: 10px 12px;
+.pid-axis-card{
+    background:rgba(255,255,255,0.05);
+    border-radius:10px;
+    padding:10px 12px;
 }
 
-.pid-axis-card h3 {
-    font-size: 0.95rem;
-    margin: 0 0 8px 0;
+.pid-axis-card h3{
+    font-size:0.95rem;
+    margin:0 0 4px 0;
 }
 
-.pid-gain-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 6px;
+.pid-loop-section{
+    padding:8px 0 2px;
 }
 
-.pid-gain-row label {
-    font-size: 0.8rem;
-    width: 20px;
-    opacity: 0.8;
+.pid-loop-section + .pid-loop-section{
+    border-top:1px solid rgba(255,255,255,0.08);
+    margin-top:8px;
 }
 
-.pid-gain-row input {
-    width: 90px;
-    padding: 6px 8px;
-    font-size: 0.85rem;
-    border-radius: 6px;
-    border: 1px solid rgba(255,255,255,0.15);
-    background: rgba(0,0,0,0.3);
-    color: white;
-    text-align: right;
+.pid-loop-section h4{
+    font-size:0.72rem;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    opacity:0.65;
+    margin:0 0 6px 0;
 }
 
-#pid-actions {
-    display: flex;
-    gap: 8px;
+.pid-gain-row{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:6px;
 }
 
-#pid-actions button {
-    flex: 1;
-    padding: 8px 10px;
-    font-size: 0.8rem;
-    border-radius: 8px;
-    border: none;
+.pid-gain-row label{
+    font-size:0.8rem;
+    width:20px;
+    opacity:0.8;
 }
 
-#pid-apply-button {
-    background: #4caf50;
-    color: white;
+.pid-gain-row input{
+    width:90px;
+    padding:6px 8px;
+    font-size:0.85rem;
+    border-radius:6px;
+    border:1px solid rgba(255,255,255,0.15);
+    background:rgba(0,0,0,0.3);
+    color:white;
+    text-align:right;
 }
 
-#pid-reset-button {
-    background: #444;
-    color: white;
+#pid-actions{
+    display:flex;
+    gap:8px;
 }
 
-#pid-status {
-    font-size: 0.8rem;
-    text-align: center;
-    opacity: 0.8;
+#pid-actions button{
+    flex:1;
+    padding:8px 10px;
+    font-size:0.8rem;
+    border-radius:8px;
+    border:none;
 }
 
-#pid-disarm-button {
-    background: #c0392b;
-    color: white;
-    border: none;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.8rem;
-    margin-top: 6px;
+#pid-apply-button{
+    background:#4caf50;
+    color:white;
+}
+
+#pid-reset-button{
+    background:#444;
+    color:white;
+}
+
+#pid-status{
+    font-size:0.8rem;
+    text-align:center;
+    opacity:0.8;
+}
+
+#pid-disarm-button{
+    background:#c0392b;
+    color:white;
+    border:none;
+    padding:6px 12px;
+    border-radius:8px;
+    font-size:0.8rem;
+    margin-top:6px;
 }

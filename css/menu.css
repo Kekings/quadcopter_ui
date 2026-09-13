@@ -3,34 +3,22 @@
 ========================================== */
 
 #side-menu{
-
     position:fixed;
-
-    top:20px;
-    bottom:20px;
-
-    right:-340px;
-
-    width:300px;
-
+    top:50%;
+    right:-290px;
+    transform:translateY(-50%);
+    width:260px;
+    max-height:calc(100vh - 80px);
     display:flex;
     flex-direction:column;
-
-    background:rgba(18,22,30,.82);
-
+    background:rgba(18,22,30,.88);
     backdrop-filter:blur(22px);
     -webkit-backdrop-filter:blur(22px);
-
     border:1px solid rgba(255,255,255,.08);
-
-    border-radius:22px 0 0 22px;
-
-    transition:right .35s ease;
-
+    border-radius:16px 0 0 16px;
+    transition:right .3s ease;
     z-index:1000;
-
     overflow:hidden;
-
 }
 
 /* ==========================================
@@ -38,9 +26,7 @@
 ========================================== */
 
 #side-menu.open{
-
-    right:20px;
-
+    right:16px;
 }
 
 /* ==========================================
@@ -48,36 +34,24 @@
 ========================================== */
 
 .menu-header{
-
-    padding:32px 24px;
-
+    padding:18px 18px 16px;
     border-bottom:1px solid rgba(255,255,255,.08);
-
-    font-size:22px;
-    font-weight:700;
-
+    font-size:17px;
+    font-weight:600;
     color:white;
-
 }
+
 /* ==========================================
    Menu Items
 ========================================== */
 
 .menu-items{
-
-    flex:1;
-
     display:flex;
     flex-direction:column;
-
-    gap:18px;
-
-    padding:24px 20px;
-
+    gap:6px;
+    padding:12px;
     overflow-y:auto;
-
     scrollbar-width:thin;
-
 }
 
 /* ==========================================
@@ -85,40 +59,27 @@
 ========================================== */
 
 .menu-item{
-
-    min-height:58px;
-
+    min-height:44px;
     display:flex;
     align-items:center;
-
-    padding:0 20px;
-
+    padding:0 14px;
     border:none;
-    border-radius:16px;
-
+    border-radius:10px;
     background:transparent;
-
     color:white;
-
-    font-size:16px;
+    font-size:14px;
     font-weight:500;
-
-    transition:.25s ease;
-
+    text-align:left;
+    transition:background .2s ease,transform .15s ease;
     cursor:pointer;
-
 }
 
 .menu-item:hover{
-
     background:rgba(255,255,255,.08);
-
 }
 
 .menu-item:active{
-
-    transform:scale(.97);
-
+    transform:scale(.98);
 }
 
 /* ==========================================
@@ -126,22 +87,15 @@
 ========================================== */
 
 #menu-overlay{
-
     position:fixed;
-
     inset:0;
-
-    background:rgba(0,0,0,.35);
-
-    backdrop-filter:blur(4px);
-
+    background:rgba(0,0,0,.3);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
     opacity:0;
     visibility:hidden;
-
-    transition:.3s ease;
-
+    transition:opacity .25s ease,visibility .25s ease;
     z-index:999;
-
 }
 
 /* ==========================================
@@ -149,34 +103,56 @@
 ========================================== */
 
 #menu-overlay.open{
-
     opacity:1;
     visibility:visible;
-
 }
-
-
 
 /* ==========================================
    Scrollbar
 ========================================== */
 
 .menu-items::-webkit-scrollbar{
-
-    width:6px;
-
+    width:4px;
 }
 
 .menu-items::-webkit-scrollbar-thumb{
-
     background:rgba(255,255,255,.18);
-
     border-radius:20px;
-
 }
 
 .menu-items::-webkit-scrollbar-track{
-
     background:transparent;
+}
 
+/* ==========================================
+   Mobile
+========================================== */
+
+@media(max-width:600px){
+
+    #side-menu{
+        width:240px;
+        max-height:calc(100vh - 60px);
+        right:-270px;
+    }
+
+    #side-menu.open{
+        right:10px;
+    }
+
+    .menu-header{
+        padding:16px;
+        font-size:16px;
+    }
+
+    .menu-items{
+        padding:10px;
+        gap:5px;
+    }
+
+    .menu-item{
+        min-height:42px;
+        padding:0 12px;
+        font-size:13px;
+    }
 }

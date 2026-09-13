@@ -14,6 +14,17 @@ const pidStatus=document.querySelector("#pid-status");
 /* ==========================================
    PID Input Elements
 ========================================== */
+const PID_AXES=[
+    "roll",
+    "pitch",
+    "yaw",
+    "roll_rate",
+    "pitch_rate",
+    "yaw_rate"
+];
+
+const PID_GAINS=["p","i","d"];
+
 const pidInputs={
     roll:{
         p:document.querySelector("#roll-p"),
@@ -29,6 +40,21 @@ const pidInputs={
         p:document.querySelector("#yaw-p"),
         i:document.querySelector("#yaw-i"),
         d:document.querySelector("#yaw-d")
+    },
+    roll_rate:{
+        p:document.querySelector("#roll-rate-p"),
+        i:document.querySelector("#roll-rate-i"),
+        d:document.querySelector("#roll-rate-d")
+    },
+    pitch_rate:{
+        p:document.querySelector("#pitch-rate-p"),
+        i:document.querySelector("#pitch-rate-i"),
+        d:document.querySelector("#pitch-rate-d")
+    },
+    yaw_rate:{
+        p:document.querySelector("#yaw-rate-p"),
+        i:document.querySelector("#yaw-rate-i"),
+        d:document.querySelector("#yaw-rate-d")
     }
 };
 
@@ -53,8 +79,8 @@ function setStatus(message,type="normal"){
    Lock / Unlock Input Fields
 ========================================== */
 function setInputsDisabled(disabled){
-    for(const axis of ["roll","pitch","yaw"]){
-        for(const gain of ["p","i","d"]){
+    for(const axis of PID_AXES){
+        for(const gain of PID_GAINS){
             const input=pidInputs[axis]?.[gain];
             if(input)input.disabled=disabled;
         }
@@ -111,13 +137,18 @@ function readGain(axis,gain){
 ========================================== */
 function readPIDValues(){
     const result={};
-    for(const axis of ["roll","pitch","yaw"]){
+
+    for(const axis of PID_AXES){
         result[axis]={};
-        for(const gain of ["p","i","d"]){
+
+        for(const gain of PID_GAINS){
             const value=readGain(axis,gain);
-            if(value!==null)result[axis][gain]=value;
+            if(value!==null){
+                result[axis][gain]=value;
+            }
         }
     }
+
     return result;
 }
 
@@ -126,22 +157,29 @@ function readPIDValues(){
 ========================================== */
 function getChangedPIDValues(){
     if(!lastPidValues)return readPIDValues();
+
     const changes={};
-    for(const axis of ["roll","pitch","yaw"]){
-        for(const gain of ["p","i","d"]){
+
+    for(const axis of PID_AXES){
+        for(const gain of PID_GAINS){
             const input=pidInputs[axis]?.[gain];
             if(!input)continue;
+
             const current=Number(input.value);
+
             if(!Number.isFinite(current)){
                 throw new Error(`Invalid ${axis} ${gain} gain`);
             }
+
             const previous=Number(lastPidValues?.[axis]?.[gain]);
+
             if(!Number.isFinite(previous)||current!==previous){
                 if(!changes[axis])changes[axis]={};
                 changes[axis][gain]=current;
             }
         }
     }
+
     return changes;
 }
 
@@ -150,9 +188,11 @@ function getChangedPIDValues(){
 ========================================== */
 function countChangedGains(changes){
     let count=0;
+
     for(const axis of Object.keys(changes||{})){
         count+=Object.keys(changes[axis]||{}).length;
     }
+
     return count;
 }
 
@@ -161,16 +201,22 @@ function countChangedGains(changes){
 ========================================== */
 function displayPIDValues(data){
     if(!data)return;
-    for(const axis of ["roll","pitch","yaw"]){
+
+    for(const axis of PID_AXES){
         if(!data[axis])continue;
-        for(const gain of ["p","i","d"]){
+
+        for(const gain of PID_GAINS){
             const input=pidInputs[axis]?.[gain];
             if(!input)continue;
+
             const value=data[axis][gain];
+
             if(value===undefined||value===null)continue;
+
             input.value=Number(value);
         }
     }
+
     lastPidValues=structuredClone(data);
     pendingPIDChanges={};
     pidDirty=false;
@@ -186,7 +232,9 @@ function requestPIDValues(){
         setStatus("🔴 Flight controller is not connected.","error");
         return;
     }
+
     setStatus("🟡 Requesting PID gains from flight controller...","loading");
+
     send({
         type:"pid",
         action:"get"
@@ -201,11 +249,14 @@ function applyPIDValues(){
         setStatus("🔒 PID tuning is locked while the drone is armed.","error");
         return;
     }
+
     if(!isConnected()){
         setStatus("🔴 Flight controller is not connected.","error");
         return;
     }
+
     let changes;
+
     try{
         changes=getChangedPIDValues();
     }catch(error){
@@ -213,21 +264,31 @@ function applyPIDValues(){
         setStatus(`🔴 ${error.message}`,"error");
         return;
     }
+
     const changedCount=countChangedGains(changes);
+
     if(changedCount===0){
         pidDirty=false;
         updateLockState();
         setStatus("🟡 No PID values were changed.");
         return;
     }
+
     pendingPIDChanges=structuredClone(changes);
+
     if(pidApplyButton)pidApplyButton.disabled=true;
-    setStatus(`🟡 Sending ${changedCount} changed PID gain${changedCount>1?"s":""}...`,"loading");
+
+    setStatus(
+        `🟡 Sending ${changedCount} changed PID gain${changedCount>1?"s":""}...`,
+        "loading"
+    );
+
     send({
         type:"pid",
         action:"set",
         gains:changes
     });
+
     console.log("📤 Changed PID gains sent:",changes);
 }
 
@@ -239,6 +300,7 @@ function resetPIDValues(){
         requestPIDValues();
         return;
     }
+
     displayPIDValues(lastPidValues);
     setStatus("🟢 PID changes discarded","success");
 }
@@ -251,6 +313,7 @@ function handlePidScreenDisarm(){
         setStatus("🟡 Drone is already disarmed.");
         return;
     }
+
     sendDisarm();
     setStatus("🟡 Sending disarm command...","loading");
 }
@@ -259,16 +322,23 @@ function handlePidScreenDisarm(){
    Input Change Detection
 ========================================== */
 function attachInputListeners(){
-    for(const axis of ["roll","pitch","yaw"]){
-        for(const gain of ["p","i","d"]){
+    for(const axis of PID_AXES){
+        for(const gain of PID_GAINS){
             const input=pidInputs[axis]?.[gain];
+
             if(!input)continue;
+
             input.addEventListener("input",()=>{
                 if(droneArmed){
-                    setStatus("🔒 PID tuning is locked while the drone is armed.","error");
+                    setStatus(
+                        "🔒 PID tuning is locked while the drone is armed.",
+                        "error"
+                    );
                     return;
                 }
+
                 let changed=false;
+
                 try{
                     const current=Number(input.value);
                     const previous=Number(lastPidValues?.[axis]?.[gain]);
@@ -276,19 +346,29 @@ function attachInputListeners(){
                 }catch(error){
                     changed=false;
                 }
+
                 if(changed){
                     pidDirty=true;
-                    if(!pendingPIDChanges[axis])pendingPIDChanges[axis]={};
+
+                    if(!pendingPIDChanges[axis]){
+                        pendingPIDChanges[axis]={};
+                    }
+
                     pendingPIDChanges[axis][gain]=Number(input.value);
                 }else if(pendingPIDChanges[axis]?.[gain]!==undefined){
                     delete pendingPIDChanges[axis][gain];
-                    if(Object.keys(pendingPIDChanges[axis]).length===0)delete pendingPIDChanges[axis];
+
+                    if(Object.keys(pendingPIDChanges[axis]).length===0){
+                        delete pendingPIDChanges[axis];
+                    }
                 }
+
                 if(!countChangedGains(pendingPIDChanges)){
                     pidDirty=false;
                     updateLockState();
                     return;
                 }
+
                 if(pidApplyButton)pidApplyButton.disabled=false;
                 setStatus("🟡 PID values modified. Press APPLY to send them.","modified");
             });
@@ -301,6 +381,7 @@ function attachInputListeners(){
 ========================================== */
 function handlePIDMessage(data){
     console.log("PID message:",data);
+
     if(!data)return;
 
     if(data.type==="pid"&&data.action==="values"){
@@ -316,6 +397,7 @@ function handlePIDMessage(data){
 
         for(const axis of Object.keys(applied)){
             if(!lastPidValues[axis])lastPidValues[axis]={};
+
             for(const gain of Object.keys(applied[axis])){
                 lastPidValues[axis][gain]=applied[axis][gain];
             }
@@ -326,14 +408,23 @@ function handlePIDMessage(data){
 
         if(pidApplyButton)pidApplyButton.disabled=false;
 
-        setStatus(`🟢 ${changedCount} PID gain${changedCount>1?"s":""} successfully applied.`,"success");
+        setStatus(
+            `🟢 ${changedCount} PID gain${changedCount>1?"s":""} successfully applied.`,
+            "success"
+        );
+
         console.log("✅ PID gains applied:",applied);
         return;
     }
 
     if(data.type==="pid"&&data.action==="set"&&data.success===false){
         if(pidApplyButton)pidApplyButton.disabled=false;
-        setStatus(`🔴 PID update failed: ${data.message||"Unknown error"}`,"error");
+
+        setStatus(
+            `🔴 PID update failed: ${data.message||"Unknown error"}`,
+            "error"
+        );
+
         return;
     }
 

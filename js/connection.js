@@ -34,7 +34,7 @@ const controllerPort = document.querySelector("#controller-port");
 const controllerDefault = document.querySelector("#controller-default");
 
 const cameraIp = document.querySelector("#camera-ip");
-const cameraStream = document.querySelector("#camera-stream");
+const cameraStream = document.querySelector("#camera-stream-path");
 
 const cameraDefault = document.querySelector("#camera-default");
 
