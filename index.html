@@ -570,6 +570,26 @@
                 </div>
             </div>
         </div>
+
+        <!-- Thermal Camera Overlay -->
+        <div id="thermal-overlay">
+            <div id="thermal-header">
+                <span>🌡 THERMAL</span>
+                <span id="thermal-status" data-state="off">Off</span>
+                <button id="thermal-close" aria-label="Close thermal overlay">✕</button>
+            </div>
+            <canvas id="thermal-canvas" width="640" height="480"></canvas>
+            <div id="thermal-footer">
+                <span id="thermal-range">--</span>
+                <span id="thermal-spot">--</span>
+            </div>
+
+            <div id="thermal-resize" title="Drag to resize"></div>
+
+
+        </div>
+
+
     </section>  
     <!-- ================= GPS Screen ================= -->
     <section id="gps-screen" class="screen">
@@ -730,6 +750,47 @@
                     </div>
                 </div>
 
+
+                <!-- Altitude -->
+
+                <div class="pid-axis-card">
+                    <h3>⇧ Altitude</h3>
+
+                    <div class="pid-loop-section">
+                        <h4>Outer · Altitude</h4>
+                        <p class="pid-loop-hint">Height error (cm) → target climb rate (cm/s)</p>
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="altitude-p" type="number" step="0.001">
+                        </div>
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="altitude-i" type="number" step="0.001">
+                        </div>
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="altitude-d" type="number" step="0.001">
+                        </div>
+                    </div>
+
+                    <div class="pid-loop-section pid-inner-section">
+                        <h4>Inner · Climb Rate</h4>
+                        <p class="pid-loop-hint">Climb-rate error (cm/s) → throttle correction (µs)</p>
+                        <div class="pid-gain-row">
+                            <label>P</label>
+                            <input id="altitude-rate-p" type="number" step="0.001">
+                        </div>
+                        <div class="pid-gain-row">
+                            <label>I</label>
+                            <input id="altitude-rate-i" type="number" step="0.001">
+                        </div>
+                        <div class="pid-gain-row">
+                            <label>D</label>
+                            <input id="altitude-rate-d" type="number" step="0.001">
+                        </div>
+                    </div>
+                </div>
+
                 <div id="pid-actions">
 
                     <button id="pid-apply-button">
@@ -799,6 +860,10 @@
 
         <button class="menu-item" id="menu-camera">
             📷 Camera
+        </button>
+
+        <button class="menu-item" id="menu-thermal">
+            🌡 Thermal Cam
         </button>
 
         <button class="menu-item" id="menu-flight-mode">

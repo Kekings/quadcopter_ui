@@ -18,5 +18,6 @@ import "./telemetry.js";
 import "./camera.js";
 import "./controls.js";
 import "./gps.js";
+import "./thermal.js";
 
 console.log("🔥 APP.JS IMPORTS COMPLETE");

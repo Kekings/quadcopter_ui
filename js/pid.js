@@ -20,43 +20,25 @@ const PID_AXES=[
     "yaw",
     "roll_rate",
     "pitch_rate",
-    "yaw_rate"
+    "yaw_rate",
+    "altitude",
+    "altitude_rate"
 ];
 
 const PID_GAINS=["p","i","d"];
 
-const pidInputs={
-    roll:{
-        p:document.querySelector("#roll-p"),
-        i:document.querySelector("#roll-i"),
-        d:document.querySelector("#roll-d")
-    },
-    pitch:{
-        p:document.querySelector("#pitch-p"),
-        i:document.querySelector("#pitch-i"),
-        d:document.querySelector("#pitch-d")
-    },
-    yaw:{
-        p:document.querySelector("#yaw-p"),
-        i:document.querySelector("#yaw-i"),
-        d:document.querySelector("#yaw-d")
-    },
-    roll_rate:{
-        p:document.querySelector("#roll-rate-p"),
-        i:document.querySelector("#roll-rate-i"),
-        d:document.querySelector("#roll-rate-d")
-    },
-    pitch_rate:{
-        p:document.querySelector("#pitch-rate-p"),
-        i:document.querySelector("#pitch-rate-i"),
-        d:document.querySelector("#pitch-rate-d")
-    },
-    yaw_rate:{
-        p:document.querySelector("#yaw-rate-p"),
-        i:document.querySelector("#yaw-rate-i"),
-        d:document.querySelector("#yaw-rate-d")
-    }
-};
+// "roll_rate" + "p" -> #roll-rate-p, "altitude_rate" + "d" -> #altitude-rate-d
+const pidInputs=Object.fromEntries(
+    PID_AXES.map(axis=>[
+        axis,
+        Object.fromEntries(
+            PID_GAINS.map(gain=>[
+                gain,
+                document.querySelector(`#${axis.replace(/_/g,"-")}-${gain}`)
+            ])
+        )
+    ])
+);
 
 /* ==========================================
    State

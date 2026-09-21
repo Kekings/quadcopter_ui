@@ -116,3 +116,9 @@
     font-size:0.8rem;
     margin-top:6px;
 }
+
+.pid-loop-hint{
+    font-size:0.7rem;
+    opacity:0.5;
+    margin:-2px 0 8px 0;
+}
