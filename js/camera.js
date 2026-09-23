@@ -6,9 +6,11 @@ let cameraEnabled = false;
 let cameraMode = "live";
 // live | placeholder
 
+let camSocket = null;
+let currentFrameUrl = null;
+
 const DEFAULT_CAMERA_IP = "10.76.74.101";
-const DEFAULT_CAMERA_PORT = 81;
-const DEFAULT_CAMERA_STREAM = "/stream";
+const DEFAULT_CAMERA_PORT = 83; // was 81/MJPEG, now the WS port
 
 /* ==========================================
    Elements
@@ -20,7 +22,6 @@ const cameraStatus = document.querySelector("#camera-status");
 const cameraPlaceholder = document.querySelector("#camera-placeholder");
 
 const cameraIpInput = document.querySelector("#camera-ip");
-const cameraStreamInput = document.querySelector("#camera-stream-path");
 const cameraDefaultCheckbox = document.querySelector("#camera-default");
 
 /* ==========================================
@@ -28,27 +29,8 @@ const cameraDefaultCheckbox = document.querySelector("#camera-default");
 ========================================== */
 
 function getCameraSettings() {
-    let cameraIp = DEFAULT_CAMERA_IP;
-    let cameraPort = DEFAULT_CAMERA_PORT;
-    let cameraStream = DEFAULT_CAMERA_STREAM;
-
-    if (cameraDefaultCheckbox && !cameraDefaultCheckbox.checked) {
-        cameraIp = cameraIpInput?.value.trim() || DEFAULT_CAMERA_IP;
-        cameraStream = cameraStreamInput?.value.trim() || DEFAULT_CAMERA_STREAM;
-    } else {
-        cameraIp = cameraIpInput?.value.trim() || DEFAULT_CAMERA_IP;
-        cameraStream = cameraStreamInput?.value.trim() || DEFAULT_CAMERA_STREAM;
-    }
-
-    if (!cameraStream.startsWith("/")) {
-        cameraStream = `/${cameraStream}`;
-    }
-
-    return {
-        cameraIp,
-        cameraPort,
-        cameraStream
-    };
+    const cameraIp = cameraIpInput?.value.trim() || DEFAULT_CAMERA_IP;
+    return { cameraIp, cameraPort: DEFAULT_CAMERA_PORT };
 }
 
 /* ==========================================
@@ -72,13 +54,22 @@ export function startCamera() {
 export function stopCamera() {
     cameraEnabled = false;
 
+    if (camSocket) {
+        camSocket.onclose = null; // prevent auto-reconnect firing after intentional close
+        camSocket.close();
+        camSocket = null;
+    }
+
+    if (currentFrameUrl) {
+        URL.revokeObjectURL(currentFrameUrl);
+        currentFrameUrl = null;
+    }
+
     placeholderVideo.pause();
     placeholderVideo.removeAttribute("src");
     placeholderVideo.load();
     placeholderVideo.style.display = "none";
 
-    cameraImage.onload = null;
-    cameraImage.onerror = null;
     cameraImage.src = "";
     cameraImage.style.display = "none";
 
@@ -94,8 +85,6 @@ export function stopCamera() {
 function playPlaceholder() {
     cameraPlaceholder.style.display = "none";
 
-    cameraImage.onload = null;
-    cameraImage.onerror = null;
     cameraImage.src = "";
     cameraImage.style.display = "none";
 
@@ -106,10 +95,6 @@ function playPlaceholder() {
         console.error("Unable to play placeholder video:", error);
     });
 
-    placeholderVideo.onloadeddata = () => {
-        console.log("Placeholder video loaded.");
-    };
-
     placeholderVideo.onerror = () => {
         console.error("Unable to load placeholder video.");
     };
@@ -118,21 +103,11 @@ function playPlaceholder() {
 }
 
 /* ==========================================
-   ESP32-CAM
+   ESP32-CAM (WebSocket)
 ========================================== */
 
 function playLiveCamera() {
-    const {
-        cameraIp,
-        cameraPort,
-        cameraStream
-    } = getCameraSettings();
-
-    const cameraUrl =
-        cameraIp.startsWith("http://") ||
-        cameraIp.startsWith("https://")
-            ? `${cameraIp}:${cameraPort}${cameraStream}`
-            : `http://${cameraIp}:${cameraPort}${cameraStream}`;
+    const { cameraIp, cameraPort } = getCameraSettings();
 
     cameraPlaceholder.style.display = "none";
 
@@ -141,37 +116,47 @@ function playLiveCamera() {
     placeholderVideo.load();
     placeholderVideo.style.display = "none";
 
-    cameraImage.onload = () => {
-        console.log(
-            "ESP32-CAM stream connected:",
-            cameraUrl
-        );
+    if (camSocket) {
+        camSocket.onclose = null;
+        camSocket.close();
+    }
 
+    cameraStatus.textContent = "📷 Connecting...";
+
+    camSocket = new WebSocket(`ws://${cameraIp}:${cameraPort}/`);
+    camSocket.binaryType = "arraybuffer";
+
+    camSocket.onopen = () => {
+        console.log("ESP32-CAM WS connected:", cameraIp, cameraPort);
         cameraStatus.textContent = "📷 Live";
+        cameraImage.style.display = "block";
     };
 
-    cameraImage.onerror = () => {
-        console.error(
-            "ESP32-CAM stream unavailable:",
-            cameraUrl
-        );
+    camSocket.onmessage = (event) => {
+        const blob = new Blob([event.data], { type: "image/jpeg" });
+        const url = URL.createObjectURL(blob);
 
-        cameraImage.onload = null;
-        cameraImage.onerror = null;
-        cameraImage.src = "";
-        cameraImage.style.display = "none";
+        cameraImage.src = url;
 
+        if (currentFrameUrl) {
+            URL.revokeObjectURL(currentFrameUrl);
+        }
+        currentFrameUrl = url;
+    };
+
+    camSocket.onerror = (e) => {
+        console.error("ESP32-CAM WS error:", e);
         cameraStatus.textContent = "📷 Camera Error";
-        cameraPlaceholder.style.display = "flex";
     };
 
-    cameraImage.style.display = "block";
-    cameraImage.src = cameraUrl;
+    camSocket.onclose = () => {
+        console.warn("ESP32-CAM WS closed");
 
-    console.log(
-        "Connecting to ESP32-CAM:",
-        cameraUrl
-    );
+        if (cameraEnabled && cameraMode === "live") {
+            cameraStatus.textContent = "📷 Reconnecting...";
+            setTimeout(playLiveCamera, 2000);
+        }
+    };
 }
 
 /* ==========================================
